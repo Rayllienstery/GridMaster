@@ -1,14 +1,15 @@
 import Foundation
 import Combine
 import UIKit
+import TMNavigation
 
 protocol HomeViewModel: Observable, ObservableObject, AnyObject {
   var isNetworkAvailable: Bool { get }
   var isLoading: Bool { get }
   var errorMessage: String? { get }
-  var loadedImage: UIImage? { get }
+  var selectedGridSize: Int { get set }
 
-  @MainActor func loadImage() async
+  @MainActor func loadImage(coordinator: TMCoordinator<AppWaypoint>) async
 }
 
 @Observable
@@ -20,9 +21,12 @@ final class HomeViewModelImpl: HomeViewModel {
     var isNetworkAvailable: Bool = true
     var isLoading: Bool = false
     var errorMessage: String?
-    var loadedImage: UIImage?
+    var selectedGridSize: Int = 3
 
-    init(imageFetcher: PicsumImageFetcherUseCase, networkMonitor: NetworkMonitorProtocol) {
+    init(
+        imageFetcher: PicsumImageFetcherUseCase,
+        networkMonitor: NetworkMonitorProtocol
+    ) {
         self.imageFetcher = imageFetcher
         self.networkMonitor = networkMonitor
         self.isNetworkAvailable = networkMonitor.currentStatus
@@ -40,7 +44,7 @@ final class HomeViewModelImpl: HomeViewModel {
     }
 
     @MainActor
-    func loadImage() async {
+    func loadImage(coordinator: TMCoordinator<AppWaypoint>) async {
         guard isNetworkAvailable else {
             errorMessage = "Network is not available"
             return
@@ -48,12 +52,11 @@ final class HomeViewModelImpl: HomeViewModel {
 
         isLoading = true
         errorMessage = nil
-        loadedImage = nil
 
         do {
             let imageData = try await imageFetcher.execute()
             if let image = UIImage(data: imageData) {
-                loadedImage = image
+                coordinator.append(.puzzle(image: image, gridSize: selectedGridSize))
             } else {
                 errorMessage = ImageError.invalidData.errorDescription
             }

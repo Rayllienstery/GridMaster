@@ -6,7 +6,10 @@ struct HomeFactory {
         let repository = ImageRepositoryImpl()
         let imageFetcher = PicsumImageFetcherUseCase(repository: repository)
         let networkMonitor = NetworkMonitor()
-        let viewModel = HomeViewModelImpl(imageFetcher: imageFetcher, networkMonitor: networkMonitor)
+        let viewModel = HomeViewModelImpl(
+            imageFetcher: imageFetcher,
+            networkMonitor: networkMonitor
+        )
         return HomeView(viewModel: viewModel)
     }
 }

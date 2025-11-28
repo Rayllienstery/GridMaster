@@ -19,7 +19,17 @@ struct PuzzleView<ViewModel: PuzzleViewModel>: View {
                     .foregroundColor(.red)
                     .padding()
             } else if !viewModel.tiles.isEmpty {
+                Text("Correct: \(viewModel.correctTilesCount())/\(viewModel.tiles.count)")
+                    .font(.headline)
+
                 gridView
+
+                Button("Shuffle") {
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        viewModel.shuffleTiles()
+                    }
+                }
+                .buttonStyle(.borderedProminent)
             }
         }
         .padding()
@@ -31,8 +41,9 @@ struct PuzzleView<ViewModel: PuzzleViewModel>: View {
     private var gridView: some View {
         GeometryReader { geometry in
             let tileSize = min(geometry.size.width, geometry.size.height) / CGFloat(viewModel.gridSize)
-            LazyVGrid(columns: Array(repeating: GridItem(.fixed(tileSize), spacing: 0), count: viewModel.gridSize), spacing: 0) {
-                ForEach(Array(viewModel.tiles.enumerated()), id: \.offset) { index, tile in
+            let columns = Array(repeating: GridItem(.fixed(tileSize), spacing: 0), count: viewModel.gridSize)
+            LazyVGrid(columns: columns, spacing: 0) {
+                ForEach(Array(viewModel.tiles.enumerated()), id: \.element.hashValue) { index, tile in
                     tileView(tile: tile, index: index, size: tileSize)
                 }
             }

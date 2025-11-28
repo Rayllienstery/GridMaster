@@ -9,10 +9,10 @@ struct GridMasterApp: App {
         WindowGroup {
             NavigationStack(path: $coordinator.navigationPath) {
                 HomeFactory().impl()
-                .navigationDestination(for: TMNavigationDestination.self) { destination in
-                  destination.view
-                }
-                .environment(\.coordinator, coordinator)
+                    .navigationDestination(for: TMNavigationDestination.self) { destination in
+                        destination.view
+                    }
+                    .environment(\.coordinator, coordinator)
             }
         }
     }

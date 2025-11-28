@@ -5,13 +5,17 @@ import Combine
 protocol PuzzleViewModel: Observable, ObservableObject, AnyObject {
     var sourceImage: UIImage? { get }
     var tiles: [UIImage] { get }
+    var correctTileHashes: [Int] { get }
     var isLoading: Bool { get }
     var errorMessage: String? { get }
 
     var gridSize: Int { get }
 
     @MainActor func splitImage() async
+    @MainActor func shuffleTiles()
     @MainActor func swapTiles(from sourceIndex: Int, to destinationIndex: Int)
+    func isTileInCorrectPosition(at index: Int) -> Bool
+    func correctTilesCount() -> Int
 }
 
 @Observable
@@ -20,6 +24,7 @@ final class PuzzleViewModelImpl: PuzzleViewModel {
 
     var sourceImage: UIImage?
     var tiles: [UIImage] = []
+    var correctTileHashes: [Int] = []
     var isLoading: Bool = false
     var errorMessage: String?
     var gridSize: Int
@@ -43,6 +48,10 @@ final class PuzzleViewModelImpl: PuzzleViewModel {
 
         do {
             tiles = try splitImageUseCase.execute(image: image)
+            // Store correct tile hashes for each position
+            correctTileHashes = tiles.map { $0.hashValue }
+            // Shuffle tiles for the puzzle
+            shuffleTiles()
         } catch let error as PuzzleError {
             errorMessage = error.errorDescription
         } catch {
@@ -50,6 +59,11 @@ final class PuzzleViewModelImpl: PuzzleViewModel {
         }
 
         isLoading = false
+    }
+
+    @MainActor
+    func shuffleTiles() {
+        tiles.shuffle()
     }
 
     @MainActor
@@ -61,5 +75,20 @@ final class PuzzleViewModelImpl: PuzzleViewModel {
         }
 
         tiles.swapAt(sourceIndex, destinationIndex)
+    }
+
+    func isTileInCorrectPosition(at index: Int) -> Bool {
+        guard index >= 0 && index < tiles.count && index < correctTileHashes.count else {
+            return false
+        }
+        // Compare current tile hash with expected hash for this position
+        return tiles[index].hashValue == correctTileHashes[index]
+    }
+
+    func correctTilesCount() -> Int {
+        guard tiles.count == correctTileHashes.count else {
+            return 0
+        }
+        return (0..<tiles.count).filter { isTileInCorrectPosition(at: $0) }.count
     }
 }
