@@ -10,6 +10,7 @@ protocol HomeViewModel: Observable, ObservableObject, AnyObject {
   var selectedGridSize: Int { get set }
 
   @MainActor func loadImage(coordinator: TMCoordinator<AppWaypoint>) async
+  @MainActor func selectLocalAsset(_ assetName: String, coordinator: TMCoordinator<AppWaypoint>)
 }
 
 @Observable
@@ -67,5 +68,14 @@ final class HomeViewModelImpl: HomeViewModel {
         }
 
         isLoading = false
+    }
+
+    @MainActor
+    func selectLocalAsset(_ assetName: String, coordinator: TMCoordinator<AppWaypoint>) {
+        guard let image = UIImage(named: assetName) else {
+            errorMessage = "Failed to load local asset: \(assetName)"
+            return
+        }
+        coordinator.append(.puzzle(image: image, gridSize: selectedGridSize))
     }
 }

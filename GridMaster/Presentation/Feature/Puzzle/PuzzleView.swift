@@ -16,7 +16,7 @@ struct PuzzleView<ViewModel: PuzzleViewModel>: View {
     @State var draggedTileIndex: Int?
 
     /// A flag indicating whether to show the completion alert.
-    @State private var showCompletionAlert = false
+    @State var showCompletionAlert = false
 
     /// The current drag offset from the initial touch point.
     @State var dragOffset: CGSize = .zero
@@ -34,24 +34,14 @@ struct PuzzleView<ViewModel: PuzzleViewModel>: View {
     var body: some View {
         VStack(spacing: 16) {
             if viewModel.isLoading {
-                ProgressView()
-                    .padding()
-            } else if let errorMessage = viewModel.errorMessage {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .padding()
+                // Loading indicator
+                loadingIndicator
+            } else if viewModel.errorMessage != nil {
+                // Error message display
+                errorMessageView
             } else if !viewModel.tiles.isEmpty {
-                Text("Correct: \(viewModel.correctTilesCount())/\(viewModel.tiles.count)")
-                    .font(.headline)
-
-                gridView
-
-                Button("Shuffle") {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        viewModel.shuffleTiles()
-                    }
-                }
-                .buttonStyle(.borderedProminent)
+                // Puzzle content (progress counter, grid, shuffle button)
+                puzzleContent
             }
         }
         .padding()
