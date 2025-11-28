@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BC35CA172ED9BE3600A6D0B1 /* TMNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = BC35CA162ED9BE3600A6D0B1 /* TMNavigation */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		BC35C3632ED9A74500A6D0B1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC35CA172ED9BE3600A6D0B1 /* TMNavigation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = GridMaster;
 			packageProductDependencies = (
+				BC35CA162ED9BE3600A6D0B1 /* TMNavigation */,
 			);
 			productName = GridMaster;
 			productReference = BC35C3552ED9A74100A6D0B1 /* GridMaster.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = BC35C34C2ED9A74100A6D0B1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BC35CA152ED9BE3600A6D0B1 /* XCRemoteSwiftPackageReference "TMNavigation" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BC35C3562ED9A74100A6D0B1 /* Products */;
 			projectDirPath = "";
@@ -580,6 +589,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BC35CA152ED9BE3600A6D0B1 /* XCRemoteSwiftPackageReference "TMNavigation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Rayllienstery/TMNavigation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BC35CA162ED9BE3600A6D0B1 /* TMNavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC35CA152ED9BE3600A6D0B1 /* XCRemoteSwiftPackageReference "TMNavigation" */;
+			productName = TMNavigation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BC35C34D2ED9A74100A6D0B1 /* Project object */;
 }

@@ -1,10 +1,14 @@
 import Foundation
 import Combine
+import UIKit
 
 protocol HomeViewModel: Observable, ObservableObject, AnyObject {
-    var isNetworkAvailable: Bool { get }
-    var isLoading: Bool { get }
-    var errorMessage: String? { get }
+  var isNetworkAvailable: Bool { get }
+  var isLoading: Bool { get }
+  var errorMessage: String? { get }
+  var loadedImage: UIImage? { get }
+
+  @MainActor func loadImage() async
 }
 
 @Observable
@@ -16,6 +20,7 @@ final class HomeViewModelImpl: HomeViewModel {
     var isNetworkAvailable: Bool = true
     var isLoading: Bool = false
     var errorMessage: String?
+    var loadedImage: UIImage?
 
     init(imageFetcher: PicsumImageFetcherUseCase, networkMonitor: NetworkMonitorProtocol) {
         self.imageFetcher = imageFetcher
@@ -43,10 +48,15 @@ final class HomeViewModelImpl: HomeViewModel {
 
         isLoading = true
         errorMessage = nil
+        loadedImage = nil
 
         do {
-            _ = try await imageFetcher.execute()
-            // Image loaded successfully
+            let imageData = try await imageFetcher.execute()
+            if let image = UIImage(data: imageData) {
+                loadedImage = image
+            } else {
+                errorMessage = ImageError.invalidData.errorDescription
+            }
         } catch let error as ImageError {
             errorMessage = error.errorDescription
         } catch {

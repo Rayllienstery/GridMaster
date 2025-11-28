@@ -1,0 +1,15 @@
+{
+  "originHash" : "89a54686351d244c564dfd8515cd73e3c88293601dc365de27cb5bb515a40dcc",
+  "pins" : [
+    {
+      "identity" : "tmnavigation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Rayllienstery/TMNavigation",
+      "state" : {
+        "revision" : "cf61b90545997466070c596c72a1121a985b6fce",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -1,7 +1,9 @@
 import SwiftUI
+import TMNavigation
 
 struct HomeView<ViewModel: HomeViewModel>: View {
     @StateObject private var viewModel: ViewModel
+    @Environment(\.coordinator) var coordinator: TMCoordinator<AppWaypoint>
 
     init(viewModel: ViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -20,10 +22,22 @@ struct HomeView<ViewModel: HomeViewModel>: View {
             }
 
             Button("Get Image from Picsum") {
-                // TODO: Add logic
+                Task {
+                    await viewModel.loadImage()
+                }
             }
             .buttonStyle(.borderedProminent)
-            .disabled(!viewModel.isNetworkAvailable)
+            .disabled(!viewModel.isNetworkAvailable || viewModel.isLoading)
+
+            if viewModel.isLoading {
+                ProgressView()
+            }
+
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .font(.subheadline)
+                    .foregroundColor(.red)
+            }
 
             if !viewModel.isNetworkAvailable {
                 Button("Select Local Asset") {
@@ -33,5 +47,10 @@ struct HomeView<ViewModel: HomeViewModel>: View {
             }
         }
         .padding()
+        .onChange(of: viewModel.loadedImage) { _, newImage in
+            if let image = newImage {
+                coordinator.append(.puzzle(image: image))
+            }
+        }
     }
 }

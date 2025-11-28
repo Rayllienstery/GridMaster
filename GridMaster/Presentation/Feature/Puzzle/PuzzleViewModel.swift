@@ -14,4 +14,3 @@ final class PuzzleViewModelImpl: PuzzleViewModel {
         self.sourceImage = sourceImage
     }
 }
-
