@@ -1,13 +1,32 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+/// A SwiftUI view that displays an interactive image puzzle game.
+///
+/// The `PuzzleView` allows users to solve a puzzle by dragging and dropping tiles
+/// to rearrange them into the correct order. The view displays a grid of image tiles
+/// that can be moved by dragging, and provides visual feedback during interactions.
+///
+/// - Note: The view requires a `PuzzleViewModel` instance to manage the puzzle state and logic.
 struct PuzzleView<ViewModel: PuzzleViewModel>: View {
-    @StateObject private var viewModel: ViewModel
-    @State private var draggedTileIndex: Int?
-    @State private var showCompletionAlert = false
-    @State private var dragOffset: CGSize = .zero
-    @State private var dragLocation: CGPoint = .zero
+    /// The view model that manages the puzzle state and business logic.
+    @StateObject var viewModel: ViewModel
 
+    /// The index of the tile currently being dragged, if any.
+    @State var draggedTileIndex: Int?
+
+    /// A flag indicating whether to show the completion alert.
+    @State private var showCompletionAlert = false
+
+    /// The current drag offset from the initial touch point.
+    @State var dragOffset: CGSize = .zero
+
+    /// The current location of the dragged tile on screen.
+    @State var dragLocation: CGPoint = .zero
+
+    /// Creates a new puzzle view with the specified view model.
+    ///
+    /// - Parameter viewModel: The view model instance that manages the puzzle state.
     init(viewModel: ViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -48,105 +67,6 @@ struct PuzzleView<ViewModel: PuzzleViewModel>: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text("Congratulations! You've successfully completed the puzzle!")
-        }
-    }
-
-    private var gridView: some View {
-        GeometryReader { geometry in
-            let tileSize =
-                min(geometry.size.width, geometry.size.height) / CGFloat(viewModel.gridSize)
-            let columns = Array(
-                repeating: GridItem(.fixed(tileSize), spacing: 0), count: viewModel.gridSize)
-            ZStack {
-                LazyVGrid(columns: columns, spacing: 0) {
-                    ForEach(Array(viewModel.tiles.enumerated()), id: \.element.hashValue) { index, tile in
-                        tileView(tile: tile, index: index, size: tileSize, geometry: geometry)
-                    }
-                }
-
-                if let draggedIndex = draggedTileIndex, draggedIndex < viewModel.tiles.count {
-                    Image(uiImage: viewModel.tiles[draggedIndex])
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: tileSize, height: tileSize)
-                        .clipped()
-                        .opacity(0.8)
-                        .position(
-                            x: dragLocation.x,
-                            y: dragLocation.y
-                        )
-                        .allowsHitTesting(false)
-                }
-            }
-        }
-        .aspectRatio(1, contentMode: .fit)
-    }
-
-    @ViewBuilder
-    private func tileView(tile: UIImage, index: Int, size: CGFloat, geometry: GeometryProxy) -> some View {
-        let isCorrect = viewModel.isTileInCorrectPosition(at: index)
-        let baseImage = Image(uiImage: tile)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: size, height: size)
-            .clipped()
-            .opacity(draggedTileIndex == index ? 0.3 : 1.0)
-
-        let row = index / viewModel.gridSize
-        let col = index % viewModel.gridSize
-        let centerX = CGFloat(col) * size + size / 2
-        let centerY = CGFloat(row) * size + size / 2
-
-        if isCorrect {
-            baseImage
-                .frame(width: size, height: size)
-                .contentShape(Rectangle())
-                .gesture(
-                    DragGesture(minimumDistance: 0)
-                        .onChanged { _ in
-                            let generator = UIImpactFeedbackGenerator(style: .medium)
-                            generator.impactOccurred()
-                        }
-                )
-        } else {
-            baseImage
-                .frame(width: size, height: size)
-                .contentShape(Rectangle())
-                .gesture(
-                    DragGesture(minimumDistance: 0)
-                        .onChanged { value in
-                            if draggedTileIndex == nil {
-                                draggedTileIndex = index
-                            }
-                            dragOffset = value.translation
-                            dragLocation = CGPoint(
-                                x: centerX + value.translation.width,
-                                y: centerY + value.translation.height
-                            )
-                        }
-                        .onEnded { _ in
-                            if let draggedIndex = draggedTileIndex {
-                                let dropRow = Int((dragLocation.y) / size)
-                                let dropCol = Int((dragLocation.x) / size)
-                                let dropIndex = dropRow * viewModel.gridSize + dropCol
-
-                                if dropIndex >= 0 && dropIndex < viewModel.tiles.count &&
-                                   dropIndex != draggedIndex &&
-                                   !viewModel.isTileInCorrectPosition(at: dropIndex) {
-                                    Task { @MainActor in
-                                        viewModel.swapTiles(from: draggedIndex, to: dropIndex)
-                                    }
-                                } else if dropIndex >= 0 && dropIndex < viewModel.tiles.count &&
-                                          viewModel.isTileInCorrectPosition(at: dropIndex) {
-                                    let generator = UIImpactFeedbackGenerator(style: .medium)
-                                    generator.impactOccurred()
-                                }
-                            }
-
-                            draggedTileIndex = nil
-                            dragOffset = .zero
-                        }
-                )
         }
     }
 }
