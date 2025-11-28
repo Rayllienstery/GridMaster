@@ -3,8 +3,13 @@ import SwiftUI
 import UIKit
 
 struct PuzzleFactory {
-    func impl(image: UIImage) -> some View {
-        let viewModel = PuzzleViewModelImpl(sourceImage: image)
+    func impl(image: UIImage, gridSize: Int) -> some View {
+        let splitImageUseCase = SplitImageIntoGridUseCase(gridSize: gridSize)
+        let viewModel = PuzzleViewModelImpl(
+            sourceImage: image,
+            splitImageUseCase: splitImageUseCase,
+            gridSize: gridSize
+        )
         return PuzzleView(viewModel: viewModel)
     }
 }

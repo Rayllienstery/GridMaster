@@ -49,7 +49,8 @@ struct HomeView<ViewModel: HomeViewModel>: View {
         .padding()
         .onChange(of: viewModel.loadedImage) { _, newImage in
             if let image = newImage {
-                coordinator.append(.puzzle(image: image))
+                let gridSize = 3 // Change to 4 for 4x4 grid, 5 for 5x5 grid, etc.
+                coordinator.append(.puzzle(image: image, gridSize: gridSize))
             }
         }
     }
