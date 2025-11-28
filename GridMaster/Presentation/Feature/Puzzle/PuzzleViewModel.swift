@@ -16,6 +16,7 @@ protocol PuzzleViewModel: Observable, ObservableObject, AnyObject {
     @MainActor func swapTiles(from sourceIndex: Int, to destinationIndex: Int)
     func isTileInCorrectPosition(at index: Int) -> Bool
     func correctTilesCount() -> Int
+    func isPuzzleCompleted() -> Bool
 }
 
 @Observable
@@ -90,5 +91,12 @@ final class PuzzleViewModelImpl: PuzzleViewModel {
             return 0
         }
         return (0..<tiles.count).filter { isTileInCorrectPosition(at: $0) }.count
+    }
+
+    func isPuzzleCompleted() -> Bool {
+        guard tiles.count == correctTileHashes.count, tiles.count > 0 else {
+            return false
+        }
+        return correctTilesCount() == tiles.count
     }
 }

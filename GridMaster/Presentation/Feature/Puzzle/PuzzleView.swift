@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 struct PuzzleView<ViewModel: PuzzleViewModel>: View {
     @StateObject private var viewModel: ViewModel
     @State private var draggedTileIndex: Int?
+    @State private var showCompletionAlert = false
 
     init(viewModel: ViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -36,6 +37,16 @@ struct PuzzleView<ViewModel: PuzzleViewModel>: View {
         .task {
             await viewModel.splitImage()
         }
+        .onChange(of: viewModel.correctTilesCount()) { _, _ in
+            if viewModel.isPuzzleCompleted() {
+                showCompletionAlert = true
+            }
+        }
+        .alert("Puzzle Completed!", isPresented: $showCompletionAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Congratulations! You've successfully completed the puzzle!")
+        }
     }
 
     private var gridView: some View {
@@ -45,8 +56,7 @@ struct PuzzleView<ViewModel: PuzzleViewModel>: View {
             let columns = Array(
                 repeating: GridItem(.fixed(tileSize), spacing: 0), count: viewModel.gridSize)
             LazyVGrid(columns: columns, spacing: 0) {
-                ForEach(Array(viewModel.tiles.enumerated()), id: \.element.hashValue) {
-                    index, tile in
+                ForEach(Array(viewModel.tiles.enumerated()), id: \.element.hashValue) { index, tile in
                     tileView(tile: tile, index: index, size: tileSize)
                 }
             }
