@@ -13,4 +13,3 @@ struct HomeFactory {
         return HomeView(viewModel: viewModel)
     }
 }
-

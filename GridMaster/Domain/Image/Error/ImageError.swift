@@ -17,4 +17,3 @@ enum ImageError: LocalizedError, Equatable {
         }
     }
 }
-

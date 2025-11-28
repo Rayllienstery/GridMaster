@@ -11,4 +11,3 @@ protocol NetworkMonitorProtocol {
     /// - Returns: `true` if network is currently available, `false` otherwise
     var currentStatus: Bool { get }
 }
-
