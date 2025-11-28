@@ -40,10 +40,13 @@ struct PuzzleView<ViewModel: PuzzleViewModel>: View {
 
     private var gridView: some View {
         GeometryReader { geometry in
-            let tileSize = min(geometry.size.width, geometry.size.height) / CGFloat(viewModel.gridSize)
-            let columns = Array(repeating: GridItem(.fixed(tileSize), spacing: 0), count: viewModel.gridSize)
+            let tileSize =
+                min(geometry.size.width, geometry.size.height) / CGFloat(viewModel.gridSize)
+            let columns = Array(
+                repeating: GridItem(.fixed(tileSize), spacing: 0), count: viewModel.gridSize)
             LazyVGrid(columns: columns, spacing: 0) {
-                ForEach(Array(viewModel.tiles.enumerated()), id: \.element.hashValue) { index, tile in
+                ForEach(Array(viewModel.tiles.enumerated()), id: \.element.hashValue) {
+                    index, tile in
                     tileView(tile: tile, index: index, size: tileSize)
                 }
             }
@@ -51,37 +54,75 @@ struct PuzzleView<ViewModel: PuzzleViewModel>: View {
         .aspectRatio(1, contentMode: .fit)
     }
 
+    @ViewBuilder
     private func tileView(tile: UIImage, index: Int, size: CGFloat) -> some View {
-        Image(uiImage: tile)
+        let isCorrect = viewModel.isTileInCorrectPosition(at: index)
+        let baseImage = Image(uiImage: tile)
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: size, height: size)
             .clipped()
-            .onDrag {
-                draggedTileIndex = index
-                return NSItemProvider(object: String(index) as NSString)
-            }
-            .onDrop(of: [UTType.plainText], delegate: TileDropDelegate(
-                destinationIndex: index,
-                draggedTileIndex: $draggedTileIndex,
-                onDrop: { sourceIndex in
-                    Task { @MainActor in
-                        viewModel.swapTiles(from: sourceIndex, to: index)
-                        draggedTileIndex = nil
+
+            if isCorrect {
+                baseImage
+                    .frame(width: size, height: size)
+                    .contentShape(Rectangle())
+                    .gesture(
+                        DragGesture(minimumDistance: 0)
+                            .onChanged { _ in
+                                let generator = UIImpactFeedbackGenerator(style: .medium)
+                                generator.impactOccurred()
+                            }
+                    )
+                    .onDrop(
+                        of: [UTType.plainText],
+                        delegate: TileDropDelegate(
+                            destinationIndex: index,
+                            draggedTileIndex: $draggedTileIndex,
+                            isDestinationLocked: true,
+                            onDrop: { _ in }
+                        ))
+            } else {
+                baseImage
+                    .frame(width: size, height: size)
+                    .onDrag {
+                        draggedTileIndex = index
+                        return NSItemProvider(object: String(index) as NSString)
                     }
-                }
-            ))
+                    .onDrop(
+                        of: [UTType.plainText],
+                        delegate: TileDropDelegate(
+                            destinationIndex: index,
+                            draggedTileIndex: $draggedTileIndex,
+                            isDestinationLocked: false,
+                            onDrop: { sourceIndex in
+                                Task { @MainActor in
+                                    viewModel.swapTiles(from: sourceIndex, to: index)
+                                    draggedTileIndex = nil
+                                }
+                            }
+                        ))
+            }
     }
 }
 
 private struct TileDropDelegate: DropDelegate {
     let destinationIndex: Int
     @Binding var draggedTileIndex: Int?
+    let isDestinationLocked: Bool
     let onDrop: (Int) -> Void
 
     func performDrop(info: DropInfo) -> Bool {
+        guard !isDestinationLocked else {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            draggedTileIndex = nil
+            return false
+        }
+
         guard let draggedIndex = draggedTileIndex,
-              draggedIndex != destinationIndex else {
+            draggedIndex != destinationIndex
+        else {
             draggedTileIndex = nil
             return false
         }
