@@ -4,15 +4,15 @@ A 3x3 grid puzzle game with drag-and-drop tile swapping. Built with SwiftUI foll
 
 ## Features
 
-- ✅ 3x3 grid puzzle with square tiles
-- ✅ Image loading from remote URL (https://picsum.photos/1024) with local fallback
-- ✅ Tap-to-select and swap tile mechanics
-- ✅ Locked tiles when in correct position
-- ✅ Completion notification
-- ✅ State persistence across orientation changes
-- ✅ 100% unit test coverage for ViewModels and UseCases
-- ✅ Clean Architecture with MVVM pattern
-- ✅ Full accessibility support
+- 3x3 / 4x4 / 5x5 grid puzzle with square tiles
+- Image loading from remote URL (`https://picsum.photos/1024`) with local fallback
+- Tap-to-select and swap tile mechanics
+- Locked tiles when in correct position
+- Completion notification
+- State persistence across orientation changes
+- 100% unit test coverage for ViewModels and UseCases
+- Clean Architecture with MVVM pattern
+- Full accessibility support
 
 ## Architecture
 
@@ -25,47 +25,70 @@ The project follows Clean Architecture principles with clear separation of conce
 
 ## Project Structure
 
-```
+```text
 GridMaster/
 ├── Presentation/
-│   └── Puzzle/
-│       ├── PuzzleView.swift
-│       ├── PuzzleViewModel.swift
-│       └── Components/
-│           ├── PuzzleTileView.swift
-│           └── PuzzleGridView.swift
+│   └── Feature/
+│       ├── Home/
+│       │   ├── HomeView.swift
+│       │   ├── HomeView+ViewComponents.swift
+│       │   ├── HomeViewModel.swift
+│       │   ├── HomeFactory.swift
+│       │   └── Components/
+│       │       └── LocalAssetButton.swift
+│       └── Puzzle/
+│           ├── PuzzleView.swift
+│           ├── PuzzleView+DragGesture.swift
+│           ├── PuzzleView+GridView.swift
+│           ├── PuzzleView+ViewComponents.swift
+│           ├── PuzzleViewModel.swift
+│           └── PuzzleFactory.swift
 ├── Domain/
-│   └── Puzzle/
-│       ├── Entity/
-│       ├── UseCase/
-│       ├── Repository/
-│       └── Error/
+│   ├── Image/
+│   │   ├── UseCase/
+│   │   │   └── PicsumImageFetcherUseCase.swift
+│   │   ├── Repository/
+│   │   │   └── ImageRepositoryProtocol.swift
+│   │   └── Error/
+│   │       └── ImageError.swift
+│   ├── Puzzle/
+│   │   ├── UseCase/
+│   │   │   └── SplitImageIntoGridUseCase.swift
+│   │   └── Error/
+│   │       └── PuzzleError.swift
+│   └── Network/
+│       └── NetworkMonitorProtocol.swift
 ├── Data/
-│   └── Puzzle/
-│       ├── Repository/
-│       ├── DataSource/
-│       └── Service/
+│   ├── Image/
+│   │   └── Repository/
+│   │       └── ImageRepositoryImpl.swift
+│   └── Network/
+│       └── NetworkMonitor.swift
 └── Application/
-    └── DependencyInjection/
+    └── Navigation/
+        ├── AppWaypoint.swift
+        └── CoordinatorKey.swift
 ```
 
 ## How to Play
 
-1. Tap a tile to select it (it will be highlighted)
-2. Tap another tile to swap them
-3. Tiles in correct positions are locked (green border with checkmark)
-4. Complete the puzzle by placing all tiles correctly
-5. Tap "Reset Puzzle" to start a new game
+1. Select grid size (2x2, 3x3, 4x4, or 5x5)
+2. Load an image from Picsum API or select a local asset (when offline)
+3. Drag and drop tiles to swap them
+4. Tiles in correct positions are locked and show haptic feedback
+5. Complete the puzzle by placing all tiles correctly
+6. Use "Shuffle" button to rearrange tiles
 
 ## Requirements
 
-- iOS 18.4+
-- Xcode 15.0+
+- iOS 18.6+
+- Xcode 16.0+
 - Swift 5.9+
 
 ## Testing
 
 Run unit tests with:
+
 ```bash
 xcodebuild test -scheme GridMaster -destination 'platform=iOS Simulator,name=iPhone 15'
 ```
