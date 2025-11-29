@@ -18,19 +18,11 @@
 			remoteGlobalIDString = BC35C3542ED9A74100A6D0B1;
 			remoteInfo = GridMaster;
 		};
-		BC35C36D2ED9A74500A6D0B1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BC35C34D2ED9A74100A6D0B1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BC35C3542ED9A74100A6D0B1;
-			remoteInfo = GridMaster;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		BC35C3552ED9A74100A6D0B1 /* GridMaster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GridMaster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC35C3622ED9A74500A6D0B1 /* GridMasterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GridMasterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC35C36C2ED9A74500A6D0B1 /* GridMasterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GridMasterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -42,11 +34,6 @@
 		BC35C3652ED9A74500A6D0B1 /* GridMasterTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = GridMasterTests;
-			sourceTree = "<group>";
-		};
-		BC35C36F2ED9A74500A6D0B1 /* GridMasterUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = GridMasterUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -67,13 +54,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BC35C3692ED9A74500A6D0B1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -82,7 +62,6 @@
 			children = (
 				BC35C3572ED9A74100A6D0B1 /* GridMaster */,
 				BC35C3652ED9A74500A6D0B1 /* GridMasterTests */,
-				BC35C36F2ED9A74500A6D0B1 /* GridMasterUITests */,
 				BC35C3562ED9A74100A6D0B1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,7 +71,6 @@
 			children = (
 				BC35C3552ED9A74100A6D0B1 /* GridMaster.app */,
 				BC35C3622ED9A74500A6D0B1 /* GridMasterTests.xctest */,
-				BC35C36C2ED9A74500A6D0B1 /* GridMasterUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -146,29 +124,6 @@
 			productReference = BC35C3622ED9A74500A6D0B1 /* GridMasterTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		BC35C36B2ED9A74500A6D0B1 /* GridMasterUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BC35C37C2ED9A74500A6D0B1 /* Build configuration list for PBXNativeTarget "GridMasterUITests" */;
-			buildPhases = (
-				BC35C3682ED9A74500A6D0B1 /* Sources */,
-				BC35C3692ED9A74500A6D0B1 /* Frameworks */,
-				BC35C36A2ED9A74500A6D0B1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BC35C36E2ED9A74500A6D0B1 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				BC35C36F2ED9A74500A6D0B1 /* GridMasterUITests */,
-			);
-			name = GridMasterUITests;
-			packageProductDependencies = (
-			);
-			productName = GridMasterUITests;
-			productReference = BC35C36C2ED9A74500A6D0B1 /* GridMasterUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -183,10 +138,6 @@
 						CreatedOnToolsVersion = 26.1.1;
 					};
 					BC35C3612ED9A74500A6D0B1 = {
-						CreatedOnToolsVersion = 26.1.1;
-						TestTargetID = BC35C3542ED9A74100A6D0B1;
-					};
-					BC35C36B2ED9A74500A6D0B1 = {
 						CreatedOnToolsVersion = 26.1.1;
 						TestTargetID = BC35C3542ED9A74100A6D0B1;
 					};
@@ -211,7 +162,6 @@
 			targets = (
 				BC35C3542ED9A74100A6D0B1 /* GridMaster */,
 				BC35C3612ED9A74500A6D0B1 /* GridMasterTests */,
-				BC35C36B2ED9A74500A6D0B1 /* GridMasterUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -225,13 +175,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BC35C3602ED9A74500A6D0B1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BC35C36A2ED9A74500A6D0B1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -255,13 +198,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BC35C3682ED9A74500A6D0B1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -269,11 +205,6 @@
 			isa = PBXTargetDependency;
 			target = BC35C3542ED9A74100A6D0B1 /* GridMaster */;
 			targetProxy = BC35C3632ED9A74500A6D0B1 /* PBXContainerItemProxy */;
-		};
-		BC35C36E2ED9A74500A6D0B1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BC35C3542ED9A74100A6D0B1 /* GridMaster */;
-			targetProxy = BC35C36D2ED9A74500A6D0B1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -509,48 +440,6 @@
 			};
 			name = Release;
 		};
-		BC35C37D2ED9A74500A6D0B1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WK5GQ95HSM;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.KKolosov.GridMasterUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = GridMaster;
-			};
-			name = Debug;
-		};
-		BC35C37E2ED9A74500A6D0B1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WK5GQ95HSM;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.KKolosov.GridMasterUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = GridMaster;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -577,15 +466,6 @@
 			buildConfigurations = (
 				BC35C37A2ED9A74500A6D0B1 /* Debug */,
 				BC35C37B2ED9A74500A6D0B1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BC35C37C2ED9A74500A6D0B1 /* Build configuration list for PBXNativeTarget "GridMasterUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BC35C37D2ED9A74500A6D0B1 /* Debug */,
-				BC35C37E2ED9A74500A6D0B1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
