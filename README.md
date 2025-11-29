@@ -10,7 +10,7 @@ A 3x3 grid puzzle game with drag-and-drop tile swapping. Built with SwiftUI foll
 - Locked tiles when in correct position
 - Completion notification
 - State persistence across orientation changes
-- 100% unit test coverage for ViewModels and UseCases
+- 85+% unit test coverage for ViewModels and UseCases
 - Clean Architecture with MVVM pattern
 - Full accessibility support
 
