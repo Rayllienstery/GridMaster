@@ -95,4 +95,4 @@ xcodebuild test -scheme GridMaster -destination 'platform=iOS Simulator,name=iPh
 
 ## License
 
-MIT License
+Apache 2.0 License
